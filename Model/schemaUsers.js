@@ -4,6 +4,10 @@ const mongoose = require('mongoose');
 const validatorName = (val) => {
     return val.length >= 3 && val.length <= 50
 }
+const validatorCity = (val) => {
+    return val.length >= 3 && val.length <= 20
+}
+
 
 //Schema
 const SchemaUser = new mongoose.Schema(
@@ -60,15 +64,18 @@ const SchemaUser = new mongoose.Schema(
       },
       City: {
         type: String,
-        required: true
+        required: true,
+        validate: [validatorCity, 'should have minimum 3 and maximum 20 characters']
       },
       State: {
         type: String,
-        required: true
+        required: true,
+        validate: [validatorCity, 'should have minimum 3 and maximum 20 characters']        
       },
       Country: {
         type: String,
-        required: true
+        required: true,
+        validate: [validatorCity, 'should have minimum 3 and maximum 20 characters']        
       },
     },
     {
