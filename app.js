@@ -5,7 +5,11 @@ var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 const configDB = require('./config/db');
 const dotenv = require('dotenv');
+const swaggerUi = require('swagger-ui-express');
+const swaggerJSDoc = require('swagger-jsdoc');
 
+
+//routers
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 
@@ -23,6 +27,26 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
+const swaggerOptions = {
+  swaggerDefinition: {
+    openai: "3.0.0",
+    info: {
+      title: 'We Care',
+      description: 'This is a REST  API application created to register users and schedule appointments',
+      version: '1.0.0',
+      contact:{
+        name:"Ludwing Laguna",
+        url:"https://github/lagunal"
+      },
+      servers:['http://localhost:3000']
+    }
+  },
+  apis: ['./routes/users.js']
+}
+const swaggerDocs = swaggerJSDoc(swaggerOptions);  
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocs));
+
+//routes
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
 
