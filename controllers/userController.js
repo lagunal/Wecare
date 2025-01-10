@@ -14,6 +14,10 @@ exports.registerUser = async (req, res) => {
         res.status(400).json({
             message: 'Email should be a valid one'
         });
+    } else if (await validator.validateExistingEmail(req.body.Email)) {
+        res.status(400).json({
+            message: 'User exists with this email id'
+        });
     } else {
 
         try {
