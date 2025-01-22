@@ -47,6 +47,38 @@ exports.registerUser = async (req, res) => {
     
 };
 
+exports.loginUser = async (req, res) => {
 
+    const userId = req.body.UserId;
+    const pwd = req.body.Password;
+    
+    try {
+        const encryptPwd = encrypt.encrypt(pwd);
+        console.log('encryptPwd: ' , encryptPwd);
+
+        const userLogged = await userModel.find(
+            { UserId: userId },
+            { Password: encryptPwd }
+        );
+        console.log(userLogged);
+        
+        if (userLogged.length > 0) {
+            res.status(200).json({
+                data: true
+            });
+        } else {
+            res.status(400).json({
+                data: {
+                    message: 'Incorrect user id or password'
+                }
+            })
+        }
+    } catch(err) {
+        res.status(400).json({
+            message: err.message
+        })
+    }
+
+};
 
 
