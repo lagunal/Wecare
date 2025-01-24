@@ -6,3 +6,6 @@ exports.encrypt = (pass) => {
     return hashpass;
 }
 
+exports.compare = async (pwd1, pwd2) => {
+    return await bcrypt.compare(pwd1, pwd2);
+}

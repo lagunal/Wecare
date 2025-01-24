@@ -49,30 +49,41 @@ exports.registerUser = async (req, res) => {
 
 exports.loginUser = async (req, res) => {
 
-    const userId = req.body.UserId;
-    const pwd = req.body.Password;
+    const { UserId, Password } = req.body;
+
+    //const userId = req.body.UserId;
+    //const pwd = req.body.Password;
     
     try {
-        const encryptPwd = encrypt.encrypt(pwd);
-        console.log('encryptPwd: ' , encryptPwd);
+        //const encryptPwd = encrypt.encrypt(Password);
+        //console.log('encryptPwd: ' , encryptPwd);
 
-        const userLogged = await userModel.find(
-            { UserId: userId },
-            { Password: encryptPwd }
-        );
+        const userLogged = await userModel.find({
+            UserId: UserId
+        });
         console.log(userLogged);
-        
-        if (userLogged.length > 0) {
-            res.status(200).json({
-                data: true
-            });
-        } else {
+        console.log(userLogged.Password);
+
+        if (!userLogged) {
             res.status(400).json({
-                data: {
-                    message: 'Incorrect user id or password'
-                }
-            })
-        }
+                message: 'Incorrect user id or password'
+            });
+        } 
+        
+        const isPwdMatch = await encrypt.compare(Password, userLogged.Password);
+
+        // if (!isPwdMatch) {
+        //     res.status(400).json({
+        //         message: 'Incorrect user id or password'
+                
+        //     });
+        // }
+        console.log('userLogged.Password: ' , userLogged.Password);
+        console.log('encryptPwd: ' , encryptPwd);
+        console.log('isPwdMatch: ' , isPwdMatch);
+
+        res.status(200).send(true);
+
     } catch(err) {
         res.status(400).json({
             message: err.message
