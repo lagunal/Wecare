@@ -51,37 +51,26 @@ exports.loginUser = async (req, res) => {
 
     const { UserId, Password } = req.body;
 
-    //const userId = req.body.UserId;
-    //const pwd = req.body.Password;
-    
     try {
-        //const encryptPwd = encrypt.encrypt(Password);
-        //console.log('encryptPwd: ' , encryptPwd);
 
-        const userLogged = await userModel.find({
-            UserId: UserId
-        });
-        console.log(userLogged);
-        console.log(userLogged.Password);
+        const userLogged = await userModel.find({ UserId: UserId }, 'UserId -_id Password');
 
-        if (!userLogged) {
-            res.status(400).json({
+        console.log('userLogged.Password: ' , userLogged[0].Password);
+
+        if (userLogged.length === 0) {
+            return res.status(400).json({
                 message: 'Incorrect user id or password'
             });
         } 
         
-        const isPwdMatch = await encrypt.compare(Password, userLogged.Password);
+        const isPwdMatch = await encrypt.compare(Password, userLogged[0].Password);
 
-        // if (!isPwdMatch) {
-        //     res.status(400).json({
-        //         message: 'Incorrect user id or password'
-                
-        //     });
-        // }
-        console.log('userLogged.Password: ' , userLogged.Password);
-        console.log('encryptPwd: ' , encryptPwd);
-        console.log('isPwdMatch: ' , isPwdMatch);
-
+        if (!isPwdMatch) {
+            return res.status(400).json({
+                message: 'Incorrect user id or password'
+            });
+        }
+   
         res.status(200).send(true);
 
     } catch(err) {
