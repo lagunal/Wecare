@@ -12,6 +12,7 @@ const swaggerJSDoc = require('swagger-jsdoc');
 //routers
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
+var coachesRouter = require('./routes/coaches');
 
 dotenv.config();
 
@@ -49,6 +50,7 @@ app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocs));
 //routes
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
+app.use('/coaches', coachesRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
