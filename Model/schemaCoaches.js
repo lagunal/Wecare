@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 //Schema
 const SchemaCoach = new mongoose.Schema(
     {
-       CoachId: {
+      CoachId: {
         type: String,
         unique: true,
         required: [true, 'Required field'],
@@ -28,7 +28,7 @@ const SchemaCoach = new mongoose.Schema(
         type: String,
         required: true
       },
-      Specialty: {
+      Speciality: {
         type: String,
         required: true
       },
