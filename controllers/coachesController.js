@@ -6,6 +6,11 @@ const validator = require('../utlities/validators');
 
 exports.registerCoach = async (req, res) => {
     //res.send('it is working coaches endpoint');
+     if (!validator.ValidatePassword(req.body.Password)) {
+        return res.status(400).json({
+            message: "Password should have minimum 5 and maximum 10 characters"
+        });
+    }
     try {
         const coachId = await helper.generateCoachId();
         await coachModel.create({

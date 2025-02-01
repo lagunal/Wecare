@@ -6,5 +6,5 @@ const coachController = require('../controllers/coachesController');
 router.post('/', coachController.registerCoach);
 
 
-module.exports = router;
+module.exports = router; 
 
