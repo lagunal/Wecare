@@ -4,7 +4,11 @@ const mongoose = require('mongoose');
 //validation functions
 const validatorName = (val) => {
   return val.length >= 3 && val.length <= 50
-}
+};
+
+const validatorSpeciality = (val) => {
+  return val.length >= 10 && val.length <= 50
+};
 
 //Schema
 const SchemaCoach = new mongoose.Schema(
@@ -37,11 +41,21 @@ const SchemaCoach = new mongoose.Schema(
       },
       MobileNumber: {
         type: String,
-        required: true
+        required: true,
+        validate: {
+          validator: (value) => {
+            return value.toString().length === 10
+          },
+          message: '{VALUE} is not valid, should have 10 digits'
+        }
       },
       Speciality: {
         type: String,
-        required: true
+        required: true,
+        validate: {
+          validator: validatorSpeciality,
+          message: 'should have minimum 3 and maximum 20 characters'
+        }
       },
     },
     {
