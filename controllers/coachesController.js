@@ -69,3 +69,6 @@ exports.loginCoach = async (req, res) => {
 
 };
 
+exports.getAllCoaches = async (req, res) => {
+    res.send('getAllCoaches working!')
+}

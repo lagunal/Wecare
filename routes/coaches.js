@@ -7,6 +7,8 @@ router.post('/', coachController.registerCoach);
 
 router.post('/login', coachController.loginCoach);
 
+router.get('/all', coachController.getAllCoaches);
+
 
 module.exports = router; 
 
