@@ -35,8 +35,37 @@ exports.registerCoach = async (req, res) => {
             message: err.message
         })
     }
+};
 
+exports.loginCoach = async (req, res) => {
 
+    const { CoachId, Password } = req.body;
+    console.log('CoachId: ', CoachId);
+    console.log('Password: ', Password); 
+    try {
+        const coachLogged = await coachModel.find({ CoachId: CoachId });
 
-}
+        if (coachLogged.length === 0) {
+            return res.status(400).json({
+                message: 'Incorrect coach id or password'
+            })
+        };
+        
+        const isPwdMatch = await encrypt.compare(Password, coachLogged[0].Password);
+
+        if (!isPwdMatch) {
+            return res.status(400).json({
+                message: 'Incorrect coach id or password'
+            })
+        };
+   
+        res.status(200).send(true);
+
+    } catch(err) {
+        res.status(400).json({
+            message: err.message
+        })
+    }
+
+};
 

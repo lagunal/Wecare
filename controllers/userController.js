@@ -50,12 +50,9 @@ exports.registerUser = async (req, res) => {
 exports.loginUser = async (req, res) => {
 
     const { UserId, Password } = req.body;
-
     try {
 
         const userLogged = await userModel.find({ UserId: UserId }, 'UserId -_id Password');
-
-        console.log('userLogged.Password: ' , userLogged[0].Password);
 
         if (userLogged.length === 0) {
             return res.status(400).json({
