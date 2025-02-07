@@ -70,5 +70,22 @@ exports.loginCoach = async (req, res) => {
 };
 
 exports.getAllCoaches = async (req, res) => {
-    res.send('getAllCoaches working!')
-}
+    //res.send('getAllCoaches working!')
+    try {
+        const coaches = await coachModel.find({});
+        if (coaches.length > 0) {
+            res.status(200).json({
+                coaches
+            })
+        } else {
+            res.status(200).json({
+                status: 'success',
+                message: 'No coaches resgistered'
+            })
+        }
+    } catch (err) {
+        res.status(400).json({
+            message: err.message
+        })
+    }
+};
