@@ -1,5 +1,6 @@
 const userModel = require('../Model/schemaUsers');
 const coachModel = require('../Model/schemaCoaches');
+const bookingModel = require('../Model/shemaBookings');
 
 
 // TO-DO improve the generation of the Id to the format "UI-0001"
@@ -17,3 +18,9 @@ exports.generateCoachId = async () => {
     return Id;
 };
 
+exports.generateBookingId = async () => {
+    const booking = await bookingModel.find({});
+    const bookingLength = booking.length + 1 || 0;
+    const Id = "B-" + bookingLength.toString(); 
+    return Id;
+};

@@ -70,6 +70,8 @@ router.post('/login', userController.loginUser);
 
 router.get('/:userId', userController.getUser);
 
+router.post('/booking/:userId/:coachId', userController.createBooking);
+
 
 module.exports = router;
 

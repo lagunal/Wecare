@@ -1,4 +1,5 @@
 const userModel = require('../Model/schemaUsers');
+const bookingModel = require('../Model/shemaBookings');
 const helper = require('../utlities/helpers');
 const validator = require('../utlities/validators');
 const encrypt = require('../utlities/encrypt');
@@ -92,6 +93,29 @@ exports.getUser = async (req, res) => {
                 message: 'User Id does not exist'
             })
         }
+    } catch(err) {
+        res.status(400).json({
+            message: err.message
+        })
+    }
+
+};
+
+exports.createBooking = async (req, res) => {
+
+    const { userId, coachId } = req.params;
+    const { Slot, DateOfAppointment } = req.body;
+
+    try {
+        const booking = await bookingModel.create({
+            BookingId: await helper.generateBookingId(),
+            UserId: userId,
+            CoachId: coachId,
+            AppointmentDate: DateOfAppointment,
+            Slot: Slot
+        });
+        res.status(200).send(true);
+
     } catch(err) {
         res.status(400).json({
             message: err.message
