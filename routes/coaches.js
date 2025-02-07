@@ -9,6 +9,8 @@ router.post('/login', coachController.loginCoach);
 
 router.get('/all', coachController.getAllCoaches);
 
+router.get('/:coachId', coachController.getCoach);
+
 
 module.exports = router; 
 

@@ -70,7 +70,7 @@ exports.loginCoach = async (req, res) => {
 };
 
 exports.getAllCoaches = async (req, res) => {
-    //res.send('getAllCoaches working!')
+    
     try {
         const coaches = await coachModel.find({});
         if (coaches.length > 0) {
@@ -88,4 +88,26 @@ exports.getAllCoaches = async (req, res) => {
             message: err.message
         })
     }
+};
+
+exports.getCoach = async (req, res) => {
+    //console.log('req.params.CoachId ' , req.params.coachId)
+    const coachId = req.params.coachId;
+    try {
+        const coach = await coachModel.find({
+            CoachId: coachId
+        })
+        if (coach.length > 0) {
+            res.status(200).json({ coach })
+        } else {
+            res.status(200).json({
+                message: 'Coach Id does not exist'
+            })
+        }
+    } catch(err) {
+        res.status(400).json({
+            message: err.message
+        })
+    }
+
 };
