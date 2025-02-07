@@ -91,7 +91,7 @@ exports.getAllCoaches = async (req, res) => {
 };
 
 exports.getCoach = async (req, res) => {
-    //console.log('req.params.CoachId ' , req.params.coachId)
+    
     const coachId = req.params.coachId;
     try {
         const coach = await coachModel.find({

@@ -78,4 +78,24 @@ exports.loginUser = async (req, res) => {
 
 };
 
+exports.getUser = async (req, res) => {
 
+    const userId = req.params.userId;
+    try {
+        const user = await userModel.find({
+            UserId: userId
+        })
+        if (user.length > 0) {
+            res.status(200).json({ user })
+        } else {
+            res.status(200).json({
+                message: 'User Id does not exist'
+            })
+        }
+    } catch(err) {
+        res.status(400).json({
+            message: err.message
+        })
+    }
+
+};
