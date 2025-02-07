@@ -105,6 +105,18 @@ exports.createBooking = async (req, res) => {
 
     const { userId, coachId } = req.params;
     const { Slot, DateOfAppointment } = req.body;
+    //console.log('validator.validateUserId(userId) ', await validator.validateUserId(userId));
+
+    if (!await validator.validateUserId(userId)) {
+        return res.status(400).json({
+            message: 'User Id does not exist'
+        })
+    };
+    if (!await validator.validateCoachId(coachId)) {
+        return res.status(400).json({
+            message: 'Coach Id does not exist'
+        })
+    };
 
     try {
         const booking = await bookingModel.create({

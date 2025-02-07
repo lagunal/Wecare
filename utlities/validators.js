@@ -25,3 +25,12 @@ exports.validateExistingName = async (name) => {
     return foundName.length > 0;
 }
 
+exports.validateUserId = async (userId) => {
+    const foundUserId = await userModel.find({ UserId: userId }).exec();
+    return foundUserId.length > 0;
+}
+
+exports.validateCoachId = async (coachId) => {
+    const foundCoachId = await coachModel.find({ CoachId: coachId }).exec();
+    return foundCoachId.length > 0;
+}
