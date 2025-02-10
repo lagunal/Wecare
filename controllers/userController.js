@@ -105,7 +105,6 @@ exports.createBooking = async (req, res) => {
 
     const { userId, coachId } = req.params;
     const { Slot, DateOfAppointment } = req.body;
-    //console.log('validator.validateUserId(userId) ', await validator.validateUserId(userId));
 
     if (!await validator.validateUserId(userId)) {
         return res.status(400).json({
