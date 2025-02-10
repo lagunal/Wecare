@@ -30,3 +30,23 @@ exports.updateBooking = async (req, res) => {
     }
 };
 
+exports.deleteBooking = async (req, res) => {
+
+    const bookingId = req.params.bookingId;
+
+    try {
+        const deletedBooking = await BookingModel.deleteOne({ BookingId: bookingId });
+        if (deletedBooking.deletedCount === 0){
+            res.status(400).json({
+                message: 'Could not delete this appointment'
+            })
+        } else {
+            res.status(200).send(true)
+        }
+
+    } catch(err) {
+        res.status(400).json({
+            message: err.message
+        })
+    }
+};
