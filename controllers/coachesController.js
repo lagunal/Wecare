@@ -1,4 +1,5 @@
 const coachModel = require('../Model/schemaCoaches');
+const bookingModel = require('../Model/shemaBookings');
 const encrypt = require('../utlities/encrypt');
 const helper = require('../utlities/helpers');
 const validator = require('../utlities/validators');
@@ -110,4 +111,25 @@ exports.getCoach = async (req, res) => {
         })
     }
 
+};
+
+exports.getBookingForCoach = async (req, res) => {
+
+    const coachId = req.params.coachId;
+    try {
+        const bookings = await bookingModel.find({
+            CoachId: coachId
+        }, { _id: 0, __v: 0 });
+        if (bookings.length > 0 ) {
+            res.status(200).send(bookings);
+        } else {
+            res.status(400).json({
+                message: 'Could not find any bookings'
+            })
+        }
+    } catch(err) {
+        res.status(400).json({
+            message: err.message
+        })
+    }
 };

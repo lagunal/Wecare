@@ -11,6 +11,7 @@ router.get('/all', coachController.getAllCoaches);
 
 router.get('/:coachId', coachController.getCoach);
 
+router.get('/booking/:coachId', coachController.getBookingForCoach);
 
 module.exports = router; 
 
