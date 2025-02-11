@@ -3,9 +3,11 @@ var express = require('express');
 
 var router = express.Router();
 
-/* GET home page. */
-router.get('/', function(req, res, next) {
-  res.render('index', { title: 'Express' });
+
+router.all('*', async function(req, res) {
+  res.status(404).json({
+    message: 'Invalid path',
+  });
 });
 
 module.exports = router;

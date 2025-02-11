@@ -134,3 +134,25 @@ exports.createBooking = async (req, res) => {
     }
 
 };
+
+exports.getBookingForUser = async (req, res) => {
+
+    const userId = req.params.userId;
+    try {
+        const bookings = await bookingModel.find({
+            UserId: userId
+        }, { _id: 0, __v: 0 });
+        if (bookings.length > 0 ) {
+            res.status(200).send(bookings);
+        } else {
+            res.status(400).json({
+                message: 'Could not find any bookings'
+            })
+        }
+    } catch(err) {
+        res.status(400).json({
+            message: err.message
+        })
+    }
+
+}

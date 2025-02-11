@@ -72,6 +72,8 @@ router.get('/:userId', userController.getUser);
 
 router.post('/booking/:userId/:coachId', userController.createBooking);
 
+router.get('/booking/:userId', userController.getBookingForUser);
+
 
 module.exports = router;
 
