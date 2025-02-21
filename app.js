@@ -7,6 +7,7 @@ const configDB = require('./config/db');
 const dotenv = require('dotenv');
 const swaggerUi = require('swagger-ui-express');
 const swaggerJSDoc = require('swagger-jsdoc');
+const errorLogger = require('./utlities/errorLogger');
 
 
 //routers
@@ -29,6 +30,7 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
+
 const swaggerOptions = {
   swaggerDefinition: {
     openai: "3.0.0",
@@ -49,10 +51,12 @@ const swaggerDocs = swaggerJSDoc(swaggerOptions);
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocs));
 
 //routes
-app.use('/', indexRouter);
+
 app.use('/users', usersRouter);
 app.use('/coaches', coachesRouter);
 app.use('/bookings' , bookingsRouter);
+app.use('/', indexRouter);
+app.use(errorLogger);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

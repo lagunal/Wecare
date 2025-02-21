@@ -5,47 +5,62 @@ const validator = require('../utlities/validators');
 const encrypt = require('../utlities/encrypt');
 
 
-exports.registerUser = async (req, res) => {
+exports.registerUser = async (req, res, next) => {
 
-    if (!validator.ValidatePassword(req.body.Password)) {
-        res.status(400).json({
-            message: "Password should have minimum 5 and maximum 10 characters"
-        });
-    } else if (!validator.ValidateEmail(req.body.Email)) {
-        res.status(400).json({
-            message: 'Email should be a valid one'
-        });
-    } else if (await validator.validateExistingEmail(req.body.Email)) {
-        res.status(400).json({
-            message: 'User exists with this email id'
-        });
-    } else {
+    const password = req.body.Password;
+    const email = req.body.Email;
+
+    //if (!validator.ValidatePassword(req.body.Password)) {
+    //    res.status(400).json({
+    //        message: "Password should have minimum 5 and maximum 10 characters"
+    //    });
+    // } else if (!validator.ValidateEmail(req.body.Email)) {
+    //     res.status(400).json({
+    //         message: 'Email should be a valid one'
+    //     });
+    // } else if (await validator.validateExistingEmail(req.body.Email)) {
+    //     res.status(400).json({
+    //         message: 'User exists with this email id'
+    //     });
+    //} else {
 
         try {
-            const Id = await helper.generateUserId();
-            await userModel.create({
-                    UserId: Id,
-                    Name: req.body.Name,
-                    Password: encrypt.encrypt(req.body.Password),
-                    DateOfBirth: req.body.DateOfBirth,
-                    Gender: req.body.Gender,
-                    MobileNumber: req.body.MobileNumber,
-                    Email: req.body.Email,
-                    PinCode: req.body.PinCode,
-                    City: req.body.City,
-                    State: req.body.State,
-                    Country: req.body.Country          
-            });
-            res.status(201).json({
-                message: Id
-            })
+            const validatePassword = validator.ValidatePassword(password);
+            const validateEmail = validator.ValidateEmail(email);
+            const validateExistingEmail = await validator.validateExistingEmail(email)
+            try {
+                const Id = await helper.generateUserId();
+                await userModel.create({
+                        UserId: Id,
+                        Name: req.body.Name,
+                        Password: encrypt.encrypt(password),
+                        DateOfBirth: req.body.DateOfBirth,
+                        Gender: req.body.Gender,
+                        MobileNumber: req.body.MobileNumber,
+                        Email: req.body.Email,
+                        PinCode: req.body.PinCode,
+                        City: req.body.City,
+                        State: req.body.State,
+                        Country: req.body.Country
+                });
+                res.status(201).json({
+                    message: Id
+                })
+            } catch(err) {
+                let error = new Error ("Registration failed. Please try again...");
+                error.status = 400;
+                //throw err;
+                next(error);
+            }
         } catch(err) {
-            res.status(400).json({
-                message: err.message
-            })
+            next(err);
+            // res.status(400).json({
+            //     message: err.message
+            // })
+
         }
-    }
-    
+
+    //}
 };
 
 exports.loginUser = async (req, res) => {
@@ -59,8 +74,8 @@ exports.loginUser = async (req, res) => {
             return res.status(400).json({
                 message: 'Incorrect user id or password'
             });
-        } 
-        
+        }
+
         const isPwdMatch = await encrypt.compare(Password, userLogged[0].Password);
 
         if (!isPwdMatch) {
@@ -68,7 +83,7 @@ exports.loginUser = async (req, res) => {
                 message: 'Incorrect user id or password'
             });
         }
-   
+
         res.status(200).send(true);
 
     } catch(err) {

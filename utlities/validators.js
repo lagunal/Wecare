@@ -2,21 +2,46 @@ const userModel = require('../Model/schemaUsers');
 const coachModel = require('../Model/schemaCoaches');
 
 exports.ValidatePassword = (pass) => {
+    var validation = true;
+    const specialCharacters = /[!@#$%^&*(),.?":{}|<>]/;
+    const numberPattern = /[0-9]/;
+    const uppercasePattern = /[A-Z]/;
+    const lowercasePattern = /[a-z]/;
     if (pass.trim().length < 5 || pass.trim().length > 10) {
-        return false;
+        validation = false;
+    } else if (!specialCharacters.test(pass) || !numberPattern.test(pass) || !uppercasePattern.test(pass) || !lowercasePattern.test(pass)) {
+        validation = false;
     }
-    return true;
+    if (validation) {
+        return true;
+    } else {
+        let err = new Error("Password is invalid");
+        err.status = 400;
+        throw err;
+    }
+    
 }
 
 exports.ValidateEmail = (email) => {
     const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    return regex.test(email);
+
+    if (!regex.test(email)) {
+        let err = new Error("Invalid email!");
+        err.status = 400;
+        throw err;
+    }
 }
 
 //validator email
 exports.validateExistingEmail = async (email) => {
     const foundEmail = await userModel.find({ Email: email }).exec();
-    return foundEmail.length > 0;
+    if (foundEmail.length > 0) {
+        let err = new Error("User already exists!");
+        err.status = 409;
+        throw err;
+    }
+
+
 }
 
 //validator coaches existing name
