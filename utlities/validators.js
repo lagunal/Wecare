@@ -36,7 +36,7 @@ exports.ValidateEmail = (email) => {
 exports.validateExistingEmail = async (email) => {
     const foundEmail = await userModel.find({ Email: email }).exec();
     if (foundEmail.length > 0) {
-        let err = new Error("User already exists!");
+        let err = new Error("Email already exists!");
         err.status = 409;
         throw err;
     }
